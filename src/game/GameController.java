@@ -14,9 +14,11 @@ public class GameController {
     }
 
     // Start the Game
-    public void start(Level level) {
+    public boolean start(Level level) {
 
+        // Run the Game Loop for the Level
         boolean playing = true;
+
         while (playing) {
 
             // Display the Current Game Status
@@ -30,18 +32,24 @@ public class GameController {
 
             // Handle the Player Quitting the Game
             if (handleQuit(input)) {
-                playing = false;
-                continue;
+                return false;
             }
 
             // Play One Game Turn
             playTurn(level, input);
 
             // Check the Current Game State
-            if (checkGameState(level)) {
+            if (!checkGameState(level)) {
                 playing = false;
             }
+
+            // Check if the Level is Complete
+            if (level.isLevelComplete()) {
+                return true;
+            }
         }
+
+        return false;
     }
 
     // Play One Game Turn
@@ -94,18 +102,14 @@ public class GameController {
 
     // Check the Current Game State
     private boolean checkGameState(Level level) {
-        // Check if the Level is Complete or the Player is Dead
-        if (level.isLevelComplete()) {
-            consoleUI.print("\n🎉 YOU WIN 🎉\n");
-            return true;
-        }
 
-        // Check if the Player is Dead
+        // Check if the Player Died
         if (!level.getHealth().isAlive()) {
             consoleUI.print("\n💀 GAME OVER 💀\n");
-            return true;
+            return false;
         }
-        return false;
+
+        return true;
     }
 
     // Display the Current Game Status
@@ -120,6 +124,7 @@ public class GameController {
         consoleUI.print("\n");
         consoleUI.printBorder(border);
         consoleUI.printEmptyLine(symbol);
+        consoleUI.printContent("📍 LEVEL : " + level.getLevelName(), symbol);
         consoleUI.printContent("🏆 SCORE : " + level.getScore().getPoints() + " PTS", symbol);
         consoleUI.printContent(
                 "❤️ HEALTH: " + level.getHealth().getCurrentHealth() + "/" + level.getHealth().getMaxHealth(), symbol);

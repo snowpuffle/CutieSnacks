@@ -1,6 +1,11 @@
 package game;
 
+import levels.Level;
 import levels.Level_1;
+import levels.Level_2;
+import levels.Level_3;
+import levels.Level_4;
+import levels.Level_5;
 
 public class Game {
 
@@ -67,17 +72,34 @@ public class Game {
         consoleUI.getUserInput(">> Press [Enter] to Return to the Menu: ");
     }
 
-    // Start Level 1
+    // Start Game
     private void startGame() {
-        startLevel1();
-    }
 
-    // Start Level 1
-    private void startLevel1() {
-        consoleUI.printHeader("CUTIE SNACKS");
+        Level[] levels = {
+                new Level_1(consoleUI),
+                new Level_2(consoleUI),
+                new Level_3(consoleUI),
+                new Level_4(consoleUI),
+                new Level_5(consoleUI),
+        };
 
-        Level_1 level1 = new Level_1(consoleUI);
+        for (int i = 0; i < levels.length; i++) {
 
-        gameController.start(level1);
+            Level level = levels[i];
+
+            // Start the Current Level
+            if (!gameController.start(level)) {
+                return;
+            }
+
+            // Check if This Was the Final Level
+            if (i == levels.length - 1) {
+                consoleUI.print("\n🎉 YOU WIN 🎉\n");
+            } else {
+                consoleUI.print("\n⭐ LEVEL " + (i + 1) + " COMPLETE! ⭐\n");
+                consoleUI.getUserInput(
+                        ">> Press [Enter] to Continue: ");
+            }
+        }
     }
 }

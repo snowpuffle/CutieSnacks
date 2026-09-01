@@ -1,5 +1,6 @@
 package levels;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import entities.Enemy;
@@ -22,10 +23,10 @@ public class EnemyManager {
     private final BFSPathFinder pathFinder;
 
     // EnemyManager Constructor
-    public EnemyManager(Player player, GameBoard gameBoard, Health health, List<Enemy> enemies) {
+    public EnemyManager(Player player, GameBoard gameBoard, Health health) {
         this.player = player;
         this.health = health;
-        this.enemies = enemies;
+        this.enemies = new ArrayList<>();
         this.pathFinder = new BFSPathFinder(gameBoard);
     }
 
@@ -79,6 +80,19 @@ public class EnemyManager {
     // Damage the Player
     private void hitPlayer(Enemy enemy) {
         health.takeDamage(enemy.getDamage());
+    }
+
+    // Handle a Player Collision with an Enemy
+    public boolean handlePlayerCollision(int row, int col) {
+
+        Enemy enemy = getEnemyAt(row, col);
+
+        if (enemy == null) {
+            return false;
+        }
+
+        health.takeDamage(enemy.getDamage());
+        return true;
     }
 
     // Check if an Enemy is Next to the Player

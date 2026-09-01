@@ -1,18 +1,13 @@
 package levels;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import entities.Enemy;
 import entities.Player;
 import game.ConsoleUI;
 import game.GameBoard;
-import objects.Exit;
 import objects.Food;
 import objects.GameObject;
 import objects.Health;
 import objects.Score;
-import objects.Wall;
+import objects.GameObjectType;
 
 // Level Owns the Player, Board, Score, Health, and Level Mechanics.
 public abstract class Level {
@@ -33,100 +28,44 @@ public abstract class Level {
 
     // Level Entities
     protected final Player player;
-    protected final List<Enemy> enemies;
 
     // Level Objects
     protected final GameBoard gameBoard;
     protected final Score score;
     protected final Health health;
+    protected final String levelName;
 
     // Game Managers
     protected final EnemyManager enemyManager;
     protected final LevelRenderer renderer;
+    private final LevelBuilder levelBuilder;
 
     // Console User Interface
     protected final ConsoleUI consoleUI;
 
     // Level Constructor
-    protected Level(ConsoleUI consoleUI, Player player) {
-
+    protected Level(ConsoleUI consoleUI, Player player, String levelName) {
         this.consoleUI = consoleUI;
-        this.player = player;
-        this.enemies = new ArrayList<>();
         this.gameBoard = new GameBoard(WIDTH, HEIGHT);
+        this.player = player;
         this.score = new Score();
         this.health = new Health(100);
-        this.enemyManager = new EnemyManager(player, gameBoard, health, enemies);
-        this.renderer = new LevelRenderer(consoleUI, player, enemies, gameBoard);
+        this.levelName = levelName;
+        this.enemyManager = new EnemyManager(player, gameBoard, health);
+        this.levelBuilder = new LevelBuilder(gameBoard, enemyManager);
+        this.renderer = new LevelRenderer(consoleUI, player, enemyManager, gameBoard);
     }
 
-    // Create the Level Objects and Enemies
-    protected void createLevelObjects(
-            char[][] maze,
-            String foodEmoji,
-            String enemyEmoji,
-            String wallEmoji,
-            String exitEmoji,
-            int foodPoints,
-            int enemyDamage) {
+    // Create the Level Objects from the Maze
+    protected void createLevelObjects(char[][] maze, String foodEmoji, String enemyEmoji, String wallEmoji1, String wallEmoji2,
+            String exitEmoji, int foodPoints, int enemyDamage) {
 
-        // Loop Through Each Row
-        for (int row = 0; row < maze.length; row++) {
-
-            // Loop Through Each Column
-            for (int col = 0; col < maze[row].length; col++) {
-
-                switch (maze[row][col]) {
-
-                    // Create a Wall
-                    case '#':
-                        gameBoard.setGameObjectAt(
-                                new Wall(
-                                        wallEmoji,
-                                        row,
-                                        col));
-                        break;
-
-                    // Create Food
-                    case 'F':
-                        gameBoard.setGameObjectAt(
-                                new Food(
-                                        foodEmoji,
-                                        foodPoints,
-                                        row,
-                                        col));
-                        break;
-
-                    // Create an Enemy
-                    case 'E':
-                        enemyManager.addEnemy(
-                                new Enemy(
-                                        enemyEmoji,
-                                        enemyDamage,
-                                        row,
-                                        col));
-                        break;
-
-                    // Create the Exit
-                    case 'X':
-                        gameBoard.setGameObjectAt(
-                                new Exit(
-                                        exitEmoji,
-                                        row,
-                                        col));
-                        break;
-
-                    // Empty Position
-                    default:
-                        break;
-                }
-            }
-        }
+        levelBuilder.build(maze, foodEmoji, enemyEmoji, wallEmoji1, wallEmoji2, exitEmoji, foodPoints, enemyDamage);
     }
 
     // Draw the Level
     public void drawLevel() {
-        renderer.draw();
+        renderer.drawLevel();
     }
 
     // Move the Player
@@ -141,14 +80,8 @@ public abstract class Level {
             return false;
         }
 
-        // Check if an Enemy is at the New Position
-        Enemy enemy = enemyManager.getEnemyAt(
-                newRow,
-                newCol);
-
         // Handle Enemy Collision
-        if (enemy != null) {
-            hitEnemy(enemy);
+        if (enemyManager.handlePlayerCollision(newRow, newCol)) {
             return false;
         }
 
@@ -158,9 +91,7 @@ public abstract class Level {
         }
 
         // Move the Player
-        player.move(
-                rowChange,
-                colChange);
+        player.move(rowChange, colChange);
 
         return true;
     }
@@ -209,14 +140,6 @@ public abstract class Level {
                 food.getCol());
     }
 
-    // Handle Enemy Collision
-    private void hitEnemy(Enemy enemy) {
-
-        // Reduce Player Health
-        health.takeDamage(
-                enemy.getDamage());
-    }
-
     // Move All Enemies
     public void moveEnemies() {
         enemyManager.moveEnemies();
@@ -231,8 +154,7 @@ public abstract class Level {
                 player.getCol());
 
         // Check if the Player Reached the Exit
-        return object != null
-                && object.getType() == objects.GameObjectType.EXIT;
+        return object != null && object.getType() == GameObjectType.EXIT;
     }
 
     // Get the Level Score
@@ -244,4 +166,10 @@ public abstract class Level {
     public Health getHealth() {
         return health;
     }
+
+    // Get the Level Name
+    public String getLevelName() {
+        return levelName;
+    }
+
 }
