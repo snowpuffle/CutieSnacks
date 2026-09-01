@@ -25,6 +25,8 @@ The game is organized using object-oriented programming principles and separates
 * Walls: 🧱 / 🪵
 * Exit: 🚪
 
+<img src="lib/resources/3.png" alt="LoginFrame" width="30%" height="30%">
+
 ### Level 2 — [Bunny Forest]
 
 * Player: 🐰
@@ -32,6 +34,8 @@ The game is organized using object-oriented programming principles and separates
 * Food: 🥕
 * Walls: 🪵 / 🌳
 * Exit: 🏠
+
+<img src="lib/resources/4.png" alt="LoginFrame" width="30%" height="30%">
 
 ### Level 3 — [Cloud Castle]
 
@@ -41,6 +45,8 @@ The game is organized using object-oriented programming principles and separates
 * Walls: ☁️ / ✨
 * Exit: 🌈
 
+<img src="lib/resources/5.png" alt="LoginFrame" width="30%" height="30%">
+
 ### Level 4 — [Swamp Snacks]
 
 * Player: 🐸
@@ -48,6 +54,8 @@ The game is organized using object-oriented programming principles and separates
 * Food: 🦋
 * Walls: 🌳 / 🌿
 * Exit: 🏡
+
+<img src="lib/resources/6.png" alt="LoginFrame" width="30%" height="30%">
 
 ### Level 5 — [Fishy Fishy]
 
@@ -57,6 +65,8 @@ The game is organized using object-oriented programming principles and separates
 * Walls: 🪸 / 🐚
 * Exit: 🌀
 
+<img src="lib/resources/7.png" alt="LoginFrame" width="30%" height="30%">
+
 ### Game Menu
 
 The main menu allows the player to:
@@ -65,7 +75,9 @@ The main menu allows the player to:
 * **How to Play:** View the game controls and instructions.
 * **Exit:** Exit the game. 
 
-<img src="lib/resources/1.png" alt="LoginFrame" width="50%" height="50%">
+<img src="lib/resources/1.png" alt="LoginFrame" width="30%" height="30%">
+
+<img src="lib/resources/2.png" alt="LoginFrame" width="30%" height="30%">
 
 ### Gameplay
 
