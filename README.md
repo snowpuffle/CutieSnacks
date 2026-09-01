@@ -106,17 +106,19 @@ Q → Quit Game
 
 ###  How to Run
 
-Open PowerShell in the project directory containing Main.java, then run:
+Open Bash in the project directory containing the src folder, then run:
 ```text
-> [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-> $OutputEncoding = [System.Text.Encoding]::UTF8
-> chcp 65001
-> javac -encoding UTF-8 Main.java game\*.java levels\*.java objects\*.java
-> java Main
+> javac -encoding UTF-8 -d bin $(find src -name "*.java")
+> java -cp bin Main
 ```
 
 ###  What These Commands Do
-* Configure PowerShell and the console to support UTF-8 emojis.
-* Compile all Java source files using UTF-8 encoding.
+* Compile all Java source files in the src directory and its subdirectories using UTF-8 encoding.
+* Place the compiled .class files into the bin directory.
 * Run the game through the Main class.
-* The project must be run from the directory containing Main.java so the package folders (game, levels, and objects) can be found correctly.
+* The -encoding UTF-8 option ensures the game's emoji characters are compiled correctly.
+* The find command automatically includes Java files from all project packages, including entities, game, levels, objects, and pathfinding.
+
+###  Requirements
+* Java JDK 25 or later
+* Bash / WSL environment
