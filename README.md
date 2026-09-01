@@ -63,7 +63,9 @@ The main menu allows the player to:
 
 * **Start Game:** Begin the game and play through the available levels.
 * **How to Play:** View the game controls and instructions.
-* **Exit:** Exit the game.
+* **Exit:** Exit the game. 
+
+<img src="lib/resources/1.png" alt="LoginFrame" width="50%" height="50%">
 
 ### Gameplay
 
@@ -94,11 +96,11 @@ Q → Quit Game
 ###  How to Run
 
 Open PowerShell in the project directory containing Main.java, then run:
->> [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
->> $OutputEncoding = [System.Text.Encoding]::UTF8
->> chcp 65001
->> javac -encoding UTF-8 Main.java game\*.java levels\*.java objects\*.java
->> java Main
+> [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+> $OutputEncoding = [System.Text.Encoding]::UTF8
+> chcp 65001
+> javac -encoding UTF-8 Main.java game\*.java levels\*.java objects\*.java
+> java Main
 
 ###  What These Commands Do
 * Configure PowerShell and the console to support UTF-8 emojis.
